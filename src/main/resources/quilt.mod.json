@@ -1,0 +1,42 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "folk.sisby",
+		"id": "picohud",
+		"version": "${version}",
+		"metadata": {
+			"name": "PicoHUD",
+			"description": "An unobtrusive, player-readable information hud",
+			"contributors": {
+				"Sisby Folk": "Co-Authors"
+			},
+			"contact": {
+				"homepage": "https://modrinth.com/mod/picohud",
+				"issues": "https://github.com/sisby-folk/picohud/issues",
+				"sources": "https://github.com/sisby-folk/picohud"
+			},
+			"icon": "assets/picohud/icon.png"
+		},
+		"entrypoints": {
+			"client_init": [
+				"folk.sisby.picohud.PicoHudClient"
+			]
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"depends": [
+			{
+				"id": "minecraft",
+				"versions": ">=${mc}"
+			},
+			{
+				"id": "quilt_loader",
+				"versions": ">=${ql}"
+			},
+			{
+				"id": "quilted_fabric_api",
+				"versions": ">=${qfapi}"
+			}
+		]
+	},
+	"mixin": "picohud.mixins.json"
+}
