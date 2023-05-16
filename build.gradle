@@ -103,6 +103,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		detectLoaders = false
 		dependencies {
 			required.project "qsl"
+			optional.project "fabric-seasons"
 		}
 		changelog = "Changelog: https://github.com/sisby-folk/picohud/releases/tag/v" + origVersion
 		syncBodyFrom = rootProject.file("README.md").text
