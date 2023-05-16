@@ -20,7 +20,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 
 	public static boolean SHOW_OVERLAY = false;
 
-	public static final List<Text> DIRECTIONS = List.of(
+	public static final List<MutableText> DIRECTIONS = List.of(
 		Text.translatable("picohud.directions.south"),
 		Text.translatable("picohud.directions.southwest"),
 		Text.translatable("picohud.directions.west"),
@@ -34,6 +34,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 		PicoHudKeybindings.initializeKeybindings();
+		HudRenderCallback.EVENT.register(this);
 
 		LOGGER.info("[PicoHUD] Initialized.");
 	}
@@ -42,23 +43,20 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public void onHudRender(MatrixStack matrixStack, float tickDelta) {
 		SHOW_OVERLAY = PicoHudKeybindings.showOverlayKeybinding.isPressed();
 
-		if (!SHOW_OVERLAY) return;
+		if (!SHOW_OVERLAY || !MinecraftClient.isHudEnabled()) return;
 		MinecraftClient client = MinecraftClient.getInstance();
-		Entity cameraEntity = client.getCameraEntity();
-		if (cameraEntity == null) {
-			return;
-		}
-
 		World clientWorld = MinecraftClient.getInstance().world;
-		if (clientWorld == null) return;
+		Entity cameraEntity = client.getCameraEntity();
+		if (clientWorld == null || cameraEntity == null || client.options.debugEnabled) return;
 
 		matrixStack.push();
-		MutableText hudText = Text.literal(String.format("%4.0f, %4.0f, %4.0f", cameraEntity.getX(), cameraEntity.getY(), cameraEntity.getZ()))
-			.append(Text.literal("\n"))
-			.append(DIRECTIONS.get((int) (((cameraEntity.getYaw(tickDelta) % 360) + 360) % 360 / 45)))
-			.append(Text.literal("\n"))
-			.append(Text.translatable("picohud.hud.time.default", 1 + (clientWorld.getTime()  / 24000), String.format("%d:%d", 6 + (clientWorld.getTimeOfDay() / 1000), clientWorld.getTimeOfDay() % 1000 > 500 ? 30 : 0)));
-		client.textRenderer.draw(matrixStack, hudText, 5, 5, 0xFFFFFF);
+		MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
+		MutableText facingText = DIRECTIONS.get((int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90));
+		MutableText timeText = Text.translatable("picohud.hud.time.default", 1 + (clientWorld.getTime()  / 24000), String.format("%d:%02d", 6 + (clientWorld.getTimeOfDay() / 1000), clientWorld.getTimeOfDay() % 1000 > 500 ? 30 : 0));
+
+		client.textRenderer.draw(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
+		client.textRenderer.draw(matrixStack, facingText, 5, 17, 0xFFFFFF);
+		client.textRenderer.draw(matrixStack, timeText, 5, 29, 0xFFFFFF);
 
 		matrixStack.pop();
 	}

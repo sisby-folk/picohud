@@ -8,6 +8,7 @@
   "picohud.directions.east":  "Facing East",
   "picohud.directions.southeast": "Facing Southeast",
 
+  "picohud.hud.coordinates": "%d, %d, %d",
   "picohud.hud.time.default": "Day %s, %s",
 
   "key.picohud.show": "Show Overlay",
