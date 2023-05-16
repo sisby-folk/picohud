@@ -3,6 +3,7 @@
 <center>An unobtrusive, player-readable information hud.</center>
 <center>Rounds and simplifies to make information glanceable.</center>
 
+---
 
 When a key (default left alt) is held, information text is shown, anchored to the top left of the screen.
 
