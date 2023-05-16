@@ -10,6 +10,7 @@
 
   "picohud.hud.coordinates": "%d, %d, %d",
   "picohud.hud.time.default": "Day %s, %s",
+  "picohud.hud.time.seasons": "%s %d %s",
 
   "key.picohud.show": "Show Overlay",
   "category.picohud.picohud": "PicoHUD"

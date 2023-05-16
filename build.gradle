@@ -32,6 +32,8 @@ group = project.maven_group
 
 repositories {
 	maven { url "https://maven.terraformersmc.com/" }
+	maven { url "https://maven.cafeteria.dev/releases" }
+	maven { url "https://maven.shedaniel.me/" } // Seasons uses REI
 }
 
 dependencies {
@@ -41,6 +43,10 @@ dependencies {
 	modImplementation libs.ql
 	modImplementation libs.qsl
 	modImplementation libs.qfapi
+
+	// Compat //
+	modCompileOnly libs.seasons
+	modLocalRuntime libs.seasons
 }
 
 processResources {
@@ -50,6 +56,7 @@ processResources {
 		"ql"             : libs.versions.ql.get(),
 		"qsl"            : libs.versions.qsl.get(),
 		"qfapi"          : libs.versions.qfapi.get(),
+		"seasons"          : libs.versions.seasons.get(),
 	]
 
 	inputs.properties(map)

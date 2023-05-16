@@ -36,6 +36,11 @@ dependencyResolutionManagement {
 			library('qm', 'org.quiltmc', 'quilt-mappings').versionRef('qm')
 			library('qsl', 'org.quiltmc', 'qsl').versionRef('qsl')
 			library('qfapi', 'org.quiltmc.quilted-fabric-api', 'quilted-fabric-api',).versionRef('qfapi')
+
+			// Compat //
+			version('seasons', '2.1+1.19')
+
+			library('seasons', 'io.github.lucaargolo', 'fabric-seasons').versionRef('seasons')
 		}
 	}
 }
