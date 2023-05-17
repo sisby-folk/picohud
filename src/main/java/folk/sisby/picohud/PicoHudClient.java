@@ -1,17 +1,24 @@
 package folk.sisby.picohud;
 
+import com.mojang.blaze3d.platform.InputUtil;
 import folk.sisby.picohud.compat.SeasonsCompat;
 import io.github.lucaargolo.seasons.FabricSeasons;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
+import org.lwjgl.glfw.GLFW;
+import org.quiltmc.config.api.Config;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
+import org.quiltmc.loader.api.config.QuiltConfig;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
+import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +30,15 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 
 	public static boolean SHOW_OVERLAY = false;
 	public static boolean SEASONS_COMPAT = false;
+
+	public static final PicoHudConfig CONFIG = QuiltConfig.create(ID, "config", PicoHudConfig.class);
+
+	public static KeyBind showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBind(
+		"key.picohud.show",
+		InputUtil.Type.KEYSYM,
+		GLFW.GLFW_KEY_LEFT_ALT,
+		"category.picohud.picohud"
+	));
 
 	public static final List<MutableText> DIRECTIONS = List.of(
 		Text.translatable("picohud.directions.south"),
@@ -37,7 +53,11 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 
 	@Override
 	public void onInitializeClient(ModContainer mod) {
-		PicoHudKeybindings.initializeKeybindings();
+		ClientTickEvents.END.register(client -> {
+			while (CONFIG.toggleShowOverlay && showOverlayKeybinding.wasPressed()) {
+				SHOW_OVERLAY = !SHOW_OVERLAY;
+			}
+		});
 		HudRenderCallback.EVENT.register(this);
 		if (QuiltLoader.isModLoaded("seasons")) SEASONS_COMPAT = true;
 		LOGGER.info("[PicoHUD] Initialized.");
@@ -45,7 +65,9 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 
 	@Override
 	public void onHudRender(MatrixStack matrixStack, float tickDelta) {
-		SHOW_OVERLAY = PicoHudKeybindings.showOverlayKeybinding.isPressed();
+		if (!CONFIG.toggleShowOverlay) {
+			SHOW_OVERLAY = showOverlayKeybinding.isPressed();
+		}
 
 		if (!SHOW_OVERLAY || !MinecraftClient.isHudEnabled()) return;
 		MinecraftClient client = MinecraftClient.getInstance();
@@ -60,9 +82,9 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		String timeOfDay = String.format("%d:%02d", (((6000 + time) % 24000) / 1000), time % 1000 > 500 ? 30 : 0);
 		MutableText timeText = SEASONS_COMPAT ? Text.translatable("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(time), SeasonsCompat.getDayOfSeason(time), (SeasonsCompat.getYear(time) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(time)) : "") + timeOfDay) : Text.translatable("picohud.hud.time.default", 1 + (time  / 24000), timeOfDay);
 
-		client.textRenderer.draw(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
-		client.textRenderer.draw(matrixStack, facingText, 5, 17, 0xFFFFFF);
-		client.textRenderer.draw(matrixStack, timeText, 5, 29, 0xFFFFFF);
+		client.textRenderer.drawWithShadow(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
+		client.textRenderer.drawWithShadow(matrixStack, facingText, 5, 17, 0xFFFFFF);
+		client.textRenderer.drawWithShadow(matrixStack, timeText, 5, 29, 0xFFFFFF);
 
 		matrixStack.pop();
 	}
