@@ -1,6 +1,7 @@
 package folk.sisby.picohud.compat;
 
 import io.github.lucaargolo.seasons.utils.Season;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
 import static io.github.lucaargolo.seasons.FabricSeasons.CONFIG;
@@ -36,13 +37,13 @@ public class SeasonsCompat {
 		long winterTime = fallTime - CONFIG.getFallLength();
 
 		if(winterTime >= 0 && CONFIG.getWinterLength() > 0) {
-			return Text.translatable(Season.WINTER.getTranslationKey());
+			return Text.translatable(Season.WINTER.getTranslationKey()).setStyle(Style.EMPTY.withColor(0x70ffff));
 		}else if(fallTime >= 0 && CONFIG.getFallLength() > 0) {
-			return Text.translatable(Season.FALL.getTranslationKey());
+			return Text.translatable(Season.FALL.getTranslationKey()).setStyle(Style.EMPTY.withColor(0xb03333));
 		}else if(summerTime >= 0 && CONFIG.getSummerLength() > 0) {
-			return Text.translatable(Season.SUMMER.getTranslationKey());
+			return Text.translatable(Season.SUMMER.getTranslationKey()).setStyle(Style.EMPTY.withColor(0xffc200));
 		}else if(springTime >= 0 && CONFIG.getSpringLength() > 0) {
-			return Text.translatable(Season.SPRING.getTranslationKey());
+			return Text.translatable(Season.SPRING.getTranslationKey()).setStyle(Style.EMPTY.withColor(0x53ff57));
 		}
 
 		return Text.literal("");
