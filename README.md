@@ -1,4 +1,4 @@
-<center><img alt="screenshot" src="https://cdn.modrinth.com/data/483PZAuC/images/ed52a5ec70f300bbde17c8a8fb18cbecff9834f1.png" /></center>
+<center><img alt="screenshot" src="https://cdn.modrinth.com/data/483PZAuC/images/eb49516d01f602d651929bc17abdb88496c208d8.png" /></center>
 
 <center>An unobtrusive, player-readable information hud.</center>
 <center>Rounds and simplifies to make information glanceable.</center>
