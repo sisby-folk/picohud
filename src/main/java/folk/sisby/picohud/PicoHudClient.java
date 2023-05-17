@@ -2,7 +2,6 @@ package folk.sisby.picohud;
 
 import com.mojang.blaze3d.platform.InputUtil;
 import folk.sisby.picohud.compat.SeasonsCompat;
-import io.github.lucaargolo.seasons.FabricSeasons;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
@@ -13,7 +12,6 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.lwjgl.glfw.GLFW;
-import org.quiltmc.config.api.Config;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.loader.api.QuiltLoader;
 import org.quiltmc.loader.api.config.QuiltConfig;
@@ -76,15 +74,21 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		if (clientWorld == null || cameraEntity == null || client.options.debugEnabled) return;
 
 		matrixStack.push();
-		MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
-		MutableText facingText = DIRECTIONS.get((int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90));
-		long time = clientWorld.getTimeOfDay();
-		String timeOfDay = String.format("%d:%02d", (((6000 + time) % 24000) / 1000), time % 1000 > 500 ? 30 : 0);
-		MutableText timeText = SEASONS_COMPAT ? Text.translatable("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(time), SeasonsCompat.getDayOfSeason(time), (SeasonsCompat.getYear(time) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(time)) : "") + timeOfDay) : Text.translatable("picohud.hud.time.default", 1 + (time  / 24000), timeOfDay);
 
+		MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
 		client.textRenderer.drawWithShadow(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
+
+		MutableText facingText = DIRECTIONS.get((int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90));
 		client.textRenderer.drawWithShadow(matrixStack, facingText, 5, 17, 0xFFFFFF);
-		client.textRenderer.drawWithShadow(matrixStack, timeText, 5, 29, 0xFFFFFF);
+
+		if (!clientWorld.getDimension().hasFixedTime()) {
+			long time = clientWorld.getTimeOfDay();
+			String timeOfDay = String.format("%d:%02d", (((6000 + time) % 24000) / 1000), time % 1000 > 500 ? 30 : 0);
+			MutableText timeText = SEASONS_COMPAT ?
+				Text.translatable("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(clientWorld), SeasonsCompat.getDayOfSeason(clientWorld), (SeasonsCompat.getYear(clientWorld) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(clientWorld)) : "") + timeOfDay) :
+				Text.translatable("picohud.hud.time.default", 1 + (time  / 24000), timeOfDay);
+			client.textRenderer.drawWithShadow(matrixStack, timeText, 5, 29, 0xFFFFFF);
+		}
 
 		matrixStack.pop();
 	}
