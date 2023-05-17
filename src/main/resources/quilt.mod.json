@@ -42,6 +42,5 @@
 				"optional": true
 			}
 		]
-	},
-	"mixin": "picohud.mixins.json"
+	}
 }
