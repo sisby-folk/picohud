@@ -9,18 +9,19 @@ When a key (default left alt) is held, information text is shown, anchored to th
 
 This includes:
 
- - Rounded Co-Ordinates
- - Facing Direction (Northeast etc.)
- - In-game Day and In-game Time - Rounded to the nearest half hour
-   - As of 1.1, will show day in a seasonal format when [Seasons](https://modrinth.com/mod/fabric-seasons) is installed
-
-Includes configuration for:
- - Toggling information via key instead of holding.
- - Showing "Axes Direction" with direction, indicating how your X and Z coordinates will change by walking forward.
+ - Coordinates, in whole values
+ - Cardinal facing direction (northeast etc.)
+ - [Default Disabled] Axes facing direction - indicates how your X and Z coordinates will change by moving forward.
+ - In-game day and In-game Time - Rounded to the nearest half hour
+   - Shows day in a seasonal format when [Seasons](https://modrinth.com/mod/fabric-seasons) is installed
 
 ![screenshot](https://github.com/sisby-folk/picohud/assets/55819817/65566ddd-03a5-465b-a03a-f69b965ed609)
 
---- 
+Includes configuration for:
+ - Which information lines to display.
+ - Whether to use toggle or hold logic for the 'show overlay' key.
+
+---
 
 ### Afterword
 
