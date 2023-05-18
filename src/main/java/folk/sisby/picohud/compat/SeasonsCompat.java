@@ -13,7 +13,7 @@ import static io.github.lucaargolo.seasons.FabricSeasons.CONFIG;
 public class SeasonsCompat {
 	public static final Map<Season, Style> SEASON_STYLES = Map.of(
 		Season.WINTER, Style.EMPTY.withColor(0x70ffff),
-		Season.FALL, Style.EMPTY.withColor(0xb03333),
+		Season.FALL, Style.EMPTY.withColor(0xd4361e),
 		Season.SUMMER, Style.EMPTY.withColor(0xffc200),
 		Season.SPRING, Style.EMPTY.withColor(0x53ff57)
 	);
