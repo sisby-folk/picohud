@@ -16,6 +16,9 @@ This includes:
 
 Includes configuration for:
  - Toggling information via key instead of holding.
+ - Showing "Axes Direction" with direction, indicating how your X and Z coordinates will change by walking forward.
+
+![screenshot](https://github.com/sisby-folk/picohud/assets/55819817/65566ddd-03a5-465b-a03a-f69b965ed609)
 
 --- 
 
