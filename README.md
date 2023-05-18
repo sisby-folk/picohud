@@ -14,6 +14,9 @@ This includes:
  - In-game Day and In-game Time - Rounded to the nearest half hour
    - As of 1.1, will show day in a seasonal format when [Seasons](https://modrinth.com/mod/fabric-seasons) is installed
 
+Includes configuration for:
+ - Toggling information via key instead of holding.
+
 --- 
 
 ### Afterword
