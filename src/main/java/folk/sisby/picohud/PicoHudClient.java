@@ -49,6 +49,17 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		Text.translatable("picohud.directions.southeast")
 	);
 
+	public static final List<MutableText> DIRECTION_AXES = List.of(
+		Text.literal("[=+]"),
+		Text.literal("[-+]"),
+		Text.literal("[-=]"),
+		Text.literal("[--]"),
+		Text.literal("[=-]"),
+		Text.literal("[+-]"),
+		Text.literal("[+=]"),
+		Text.literal("[++]")
+	);
+
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 		ClientTickEvents.END.register(client -> {
@@ -78,7 +89,9 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
 		client.textRenderer.drawWithShadow(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
 
-		MutableText facingText = DIRECTIONS.get((int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90));
+		int direction = (int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90);
+		MutableText facingText = DIRECTIONS.get(direction);
+		if (CONFIG.showDirectionAxes) facingText.append(Text.literal(" ")).append(DIRECTION_AXES.get(direction));
 		client.textRenderer.drawWithShadow(matrixStack, facingText, 5, 17, 0xFFFFFF);
 
 		if (!clientWorld.getDimension().hasFixedTime()) {

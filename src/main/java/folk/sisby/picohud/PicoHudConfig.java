@@ -6,4 +6,6 @@ import org.quiltmc.config.api.annotations.Comment;
 public class PicoHudConfig extends WrappedConfig {
 	@Comment("Whether the show overlay key should act as a toggle, instead of a hold")
 	public final Boolean toggleShowOverlay = false;
+	@Comment("Whether to show an indicator (e.g. [=+]) that indicates how travelling forward will affect your X and Z coordinates")
+	public final Boolean showDirectionAxes = false;
 }
