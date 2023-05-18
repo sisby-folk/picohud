@@ -63,7 +63,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	@Override
 	public void onInitializeClient(ModContainer mod) {
 		ClientTickEvents.END.register(client -> {
-			while (CONFIG.toggleShowOverlay && showOverlayKeybinding.wasPressed()) {
+			while (CONFIG.useKeyToggle && showOverlayKeybinding.wasPressed()) {
 				SHOW_OVERLAY = !SHOW_OVERLAY;
 			}
 		});
@@ -74,27 +74,32 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 
 	@Override
 	public void onHudRender(MatrixStack matrixStack, float tickDelta) {
-		if (!CONFIG.toggleShowOverlay) {
+		if (!CONFIG.useKeyToggle) {
 			SHOW_OVERLAY = showOverlayKeybinding.isPressed();
 		}
 
-		if (!SHOW_OVERLAY || !MinecraftClient.isHudEnabled()) return;
 		MinecraftClient client = MinecraftClient.getInstance();
+		if (!SHOW_OVERLAY || !MinecraftClient.isHudEnabled() || client.options.debugEnabled) return;
 		World clientWorld = MinecraftClient.getInstance().world;
 		Entity cameraEntity = client.getCameraEntity();
-		if (clientWorld == null || cameraEntity == null || client.options.debugEnabled) return;
+		if (clientWorld == null || cameraEntity == null) return;
 
 		matrixStack.push();
 
-		MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
-		client.textRenderer.drawWithShadow(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
+		if (CONFIG.showCoordinates) {
+			MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
+			client.textRenderer.drawWithShadow(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
+		}
 
-		int direction = (int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90);
-		MutableText facingText = DIRECTIONS.get(direction);
-		if (CONFIG.showDirectionAxes) facingText.append(Text.literal(" ")).append(DIRECTION_AXES.get(direction));
-		client.textRenderer.drawWithShadow(matrixStack, facingText, 5, 17, 0xFFFFFF);
+		if (CONFIG.showDirectionCardinal || CONFIG.showDirectionAxes) {
+			int direction = (int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90);
+			MutableText directionText = Text.literal("");
+			if (CONFIG.showDirectionCardinal) directionText.append(DIRECTIONS.get(direction)).append(" ");
+			if (CONFIG.showDirectionAxes) directionText.append(DIRECTION_AXES.get(direction));
+			client.textRenderer.drawWithShadow(matrixStack, directionText, 5, 17, 0xFFFFFF);
+		}
 
-		if (!clientWorld.getDimension().hasFixedTime()) {
+		if (CONFIG.showDayTime && !clientWorld.getDimension().hasFixedTime()) {
 			long time = clientWorld.getTimeOfDay();
 			String timeOfDay = String.format("%d:%02d", (((6000 + time) % 24000) / 1000), time % 1000 > 500 ? 30 : 0);
 			MutableText timeText = SEASONS_COMPAT ?
