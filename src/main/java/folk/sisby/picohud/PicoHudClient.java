@@ -5,6 +5,7 @@ import folk.sisby.picohud.compat.SeasonsCompat;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
@@ -73,7 +74,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	}
 
 	@Override
-	public void onHudRender(MatrixStack matrixStack, float tickDelta) {
+	public void onHudRender(GuiGraphics graphics, float tickDelta) {
 		if (!CONFIG.useKeyToggle) {
 			SHOW_OVERLAY = showOverlayKeybinding.isPressed();
 		}
@@ -84,11 +85,9 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		Entity cameraEntity = client.getCameraEntity();
 		if (clientWorld == null || cameraEntity == null) return;
 
-		matrixStack.push();
-
 		if (CONFIG.showCoordinates) {
 			MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
-			client.textRenderer.drawWithShadow(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
+			graphics.drawShadowedText(client.textRenderer, coordinateText, 5, 5, 0xFFFFFF);
 		}
 
 		if (CONFIG.showDirectionCardinal || CONFIG.showDirectionAxes) {
@@ -96,7 +95,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 			MutableText directionText = Text.literal("");
 			if (CONFIG.showDirectionCardinal) directionText.append(DIRECTIONS.get(direction)).append(" ");
 			if (CONFIG.showDirectionAxes) directionText.append(DIRECTION_AXES.get(direction));
-			client.textRenderer.drawWithShadow(matrixStack, directionText, 5, 17, 0xFFFFFF);
+			graphics.drawShadowedText(client.textRenderer, directionText, 5, 17, 0xFFFFFF);
 		}
 
 		if (CONFIG.showDayTime && !clientWorld.getDimension().hasFixedTime()) {
@@ -105,9 +104,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 			MutableText timeText = SEASONS_COMPAT ?
 				Text.translatable("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(clientWorld), SeasonsCompat.getDayOfSeason(clientWorld), (SeasonsCompat.getYear(clientWorld) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(clientWorld)) : "") + timeOfDay) :
 				Text.translatable("picohud.hud.time.default", 1 + (time  / 24000), timeOfDay);
-			client.textRenderer.drawWithShadow(matrixStack, timeText, 5, 29, 0xFFFFFF);
+			graphics.drawShadowedText(client.textRenderer, timeText, 5, 29, 0xFFFFFF);
 		}
-
-		matrixStack.pop();
 	}
 }
