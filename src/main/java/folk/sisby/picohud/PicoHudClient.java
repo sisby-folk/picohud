@@ -2,8 +2,11 @@ package folk.sisby.picohud;
 
 import com.mojang.blaze3d.platform.InputUtil;
 import folk.sisby.picohud.compat.SeasonsCompat;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.loader.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.util.math.MatrixStack;
@@ -12,16 +15,14 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.lwjgl.glfw.GLFW;
-import org.quiltmc.loader.api.ModContainer;
-import org.quiltmc.loader.api.QuiltLoader;
-import org.quiltmc.loader.api.config.QuiltConfig;
-import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
-import org.quiltmc.qsl.lifecycle.api.client.event.ClientTickEvents;
+import org.quiltmc.config.impl.ConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Paths;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public static final String ID = "picohud";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
@@ -29,7 +30,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public static boolean SHOW_OVERLAY = false;
 	public static boolean SEASONS_COMPAT = false;
 
-	public static final PicoHudConfig CONFIG = QuiltConfig.create(ID, "config", PicoHudConfig.class);
+	public static final PicoHudConfig CONFIG = ConfigImpl.create(QuiltifiedFabricConfig.ENV, ID,"config",  Paths.get(""), b -> {}, PicoHudConfig.class, b -> {});
 
 	public static KeyBind showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBind(
 		"key.picohud.show",
@@ -61,14 +62,14 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	);
 
 	@Override
-	public void onInitializeClient(ModContainer mod) {
-		ClientTickEvents.END.register(client -> {
+	public void onInitializeClient() {
+		ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			while (CONFIG.useKeyToggle && showOverlayKeybinding.wasPressed()) {
 				SHOW_OVERLAY = !SHOW_OVERLAY;
 			}
 		});
 		HudRenderCallback.EVENT.register(this);
-		if (QuiltLoader.isModLoaded("seasons")) SEASONS_COMPAT = true;
+		if (FabricLoader.INSTANCE.isModLoaded("seasons")) SEASONS_COMPAT = true;
 		LOGGER.info("[PicoHUD] Initialized.");
 	}
 

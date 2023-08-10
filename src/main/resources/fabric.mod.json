@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "picohud",
+  "version": "${version}",
+  "name": "PicoHUD",
+  "description": "An unobtrusive, player-readable information hud",
+  "authors": [
+    "Sisby folk"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/picohud",
+    "issues": "https://github.com/sisby-folk/picohud/issues",
+    "sources": "https://github.com/sisby-folk/picohud"
+  },
+  "license": "LGPL-3.0-only",
+  "icon": "assets/picohud/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "folk.sisby.picohud.PicoHudClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "minecraft": ">=1.15",
+    "java": ">=17"
+  },
+  "suggests": {
+    "seasons": ">=${seasons}"
+  }
+}

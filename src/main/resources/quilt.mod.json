@@ -18,7 +18,7 @@
 			"icon": "assets/picohud/icon.png"
 		},
 		"entrypoints": {
-			"client_init": [
+			"client": [
 				"folk.sisby.picohud.PicoHudClient"
 			]
 		},
