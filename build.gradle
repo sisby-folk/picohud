@@ -13,6 +13,7 @@ buildscript {
 plugins {
 	id 'maven-publish'
 	alias libs.plugins.loom
+	id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 if (System.getenv("MODRINTH_TOKEN")) {
@@ -46,9 +47,9 @@ dependencies {
 	modImplementation libs.qsl
 	modImplementation libs.qfapi
 
-	modImplementation libs.nightConfig
-	modImplementation libs.nightConfigToml
-	modImplementation libs.quiltConfig
+	compileOnly libs.nightConfig
+	compileOnly libs.nightConfigToml
+ 	api libs.quiltConfig
 
 	include libs.nightConfig
 	include libs.nightConfigToml

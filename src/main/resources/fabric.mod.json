@@ -27,5 +27,16 @@
   },
   "suggests": {
     "seasons": ">=${seasons}"
-  }
+  },
+  "jars": [
+    {
+      "file": "META-INF/jars/core-3.6.6.jar"
+    },
+    {
+      "file": "META-INF/jars/toml-3.6.6.jar"
+    },
+    {
+      "file": "META-INF/jars/quilt-config-1.0.0-beta.6.jar"
+    }
+  ]
 }
