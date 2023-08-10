@@ -75,6 +75,16 @@ processResources {
 	filesMatching('*.mod.json') { expand(map) }
 }
 
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.GsonBuilder;
+import java.nio.file.Files;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+
 tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
 	it.options.release = 17
@@ -82,6 +92,30 @@ tasks.withType(JavaCompile).configureEach {
 
 java {
 	withSourcesJar()
+}
+
+def gson = new GsonBuilder().setPrettyPrinting().create()
+
+
+tasks.register("noQuiltConfigInQmj") {
+	group "fabric"
+	dependsOn "remapJar"
+	inputs.files(remapJar.outputs.files)
+	doLast {
+		for (final def file in getInputs().getFiles()) {
+			for (final def root in FileSystems.newFileSystem(file.toPath()).getRootDirectories()) {
+				Path qmj = root.resolve("quilt.mod.json")
+				JsonObject json = JsonParser.parseString(qmj.text).getAsJsonObject();
+				JsonObject loaderObject = json.get("quilt_loader")
+				List<JsonElement> jars = loaderObject.get("jars").getAsJsonArray().toList()
+				jars.removeIf( it2 -> it2.getAsString() == "META-INF/jars/quilt-config-1.0.0-beta.6.jar")
+				JsonArray outJars = new JsonArray()
+				jars.forEach(outJars::add)
+				loaderObject.add("jars", outJars)
+				Files.writeString(qmj, gson.toJson(json))
+			}
+		}
+	}
 }
 
 jar {
@@ -137,4 +171,12 @@ if (System.getenv("GITHUB_TOKEN")) {
 		generateReleaseNotes true
 	}
 	tasks.githubRelease.dependsOn remapJar
+}
+
+if (System.getenv("MODRINTH_TOKEN") && System.getenv("GITHUB_TOKEN")) {
+	tasks.register("fullRelease") {
+		group "publishing"
+		dependsOn "githubRelease"
+		dependsOn "modrinth"
+	}
 }
