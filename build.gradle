@@ -44,16 +44,15 @@ dependencies {
 	minecraft libs.mc
 	mappings variantOf(libs.qm) { classifier "intermediary-v2" }
 	modImplementation libs.ql
-	modImplementation libs.qsl
 	modImplementation libs.qfapi
 
-	compileOnly libs.nightConfig
-	compileOnly libs.nightConfigToml
- 	api libs.quiltConfig
+	implementation libs.quiltConfig
+	implementation libs.nightConfig
+	implementation libs.nightConfigToml
 
-	include libs.nightConfig
-	include libs.nightConfigToml
-	include libs.quiltConfig
+	shadow libs.quiltConfig
+	shadow libs.nightConfig
+	shadow libs.nightConfigToml
 
 	// Compat //
 	modCompileOnly libs.seasons
@@ -62,28 +61,17 @@ dependencies {
 
 processResources {
 	final Map<String, String> map = [
-		"version"        : version.toString(),
-		"mc"             : libs.versions.mc.get(),
-		"ql"             : libs.versions.ql.get(),
-		"qsl"            : libs.versions.qsl.get(),
-		"fapi"          : libs.versions.fapi.get(),
-		"qfapi"          : libs.versions.qfapi.get(),
-		"seasons"          : libs.versions.seasons.get(),
+		"version": version.toString(),
+		"mc"     : libs.versions.mc.get(),
+		"ql"     : libs.versions.ql.get(),
+		"fapi"   : libs.versions.fapi.get(),
+		"qfapi"  : libs.versions.qfapi.get(),
+		"seasons": libs.versions.seasons.get(),
 	]
 
 	inputs.properties(map)
 	filesMatching('*.mod.json') { expand(map) }
 }
-
-
-import com.google.gson.JsonObject;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
-import com.google.gson.GsonBuilder;
-import java.nio.file.Files;
-import java.nio.file.FileSystems;
-import java.nio.file.Path;
 
 tasks.withType(JavaCompile).configureEach {
 	it.options.encoding = "UTF-8"
@@ -94,34 +82,26 @@ java {
 	withSourcesJar()
 }
 
-def gson = new GsonBuilder().setPrettyPrinting().create()
-
-
-tasks.register("noQuiltConfigInQmj") {
-	group "fabric"
-	dependsOn "remapJar"
-	inputs.files(remapJar.outputs.files)
-	doLast {
-		for (final def file in getInputs().getFiles()) {
-			for (final def root in FileSystems.newFileSystem(file.toPath()).getRootDirectories()) {
-				Path qmj = root.resolve("quilt.mod.json")
-				JsonObject json = JsonParser.parseString(qmj.text).getAsJsonObject();
-				JsonObject loaderObject = json.get("quilt_loader")
-				List<JsonElement> jars = loaderObject.get("jars").getAsJsonArray().toList()
-				jars.removeIf( it2 -> it2.getAsString() == "META-INF/jars/quilt-config-1.0.0-beta.6.jar")
-				JsonArray outJars = new JsonArray()
-				jars.forEach(outJars::add)
-				loaderObject.add("jars", outJars)
-				Files.writeString(qmj, gson.toJson(json))
-			}
-		}
-	}
-}
-
 jar {
 	from("LICENSE.txt") {
 		rename { "${it}_${archivesBaseName}" }
 	}
+}
+
+shadowJar {
+	relocate 'org.quiltmc.config', 'folk.sisby.picohud.repackage.quiltconfig'
+	relocate 'com.electronwill.nightconfig', 'folk.sisby.picohud.repackage.nightconfig'
+	dependencies {
+		include dependency(libs.nightConfig.get())
+		include dependency(libs.nightConfigToml.get())
+		include dependency(libs.quiltConfig.get())
+	}
+	minimize()
+}
+
+remapJar {
+	dependsOn(shadowJar)
+	input.set(shadowJar.archivePath)
 }
 
 publishing {
@@ -132,7 +112,6 @@ publishing {
 	}
 
 	repositories {
-
 	}
 }
 
@@ -145,10 +124,9 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		versionType = 'release'
 		uploadFile = remapJar
 		gameVersions = ['1.20', '1.20.1']
-		loaders = ['quilt']
+		loaders = ['quilt', 'fabric']
 		detectLoaders = false
 		dependencies {
-			required.project "qsl"
 			optional.project "fabric-seasons"
 		}
 		changelog = "Changelog: https://github.com/sisby-folk/picohud/releases/tag/v" + origVersion

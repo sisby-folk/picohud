@@ -1,7 +1,11 @@
+<!--suppress HtmlDeprecatedTag, XmlDeprecatedElement -->
 <center><img alt="screenshot" src="https://cdn.modrinth.com/data/483PZAuC/images/eb49516d01f602d651929bc17abdb88496c208d8.png" /></center>
 
-<center>An unobtrusive, player-readable information hud.</center>
-<center>Rounds and simplifies to make information glanceable.</center>
+<center>
+An unobtrusive, player-readable information hud.<br/>
+Rounds and simplifies to make information glanceable.<br/>
+Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href="https://modrinth.com/mod/forgified-fabric-api">FFAPI</a> on forge.<br/>
+</center>
 
 ---
 
