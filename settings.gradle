@@ -1,51 +1,15 @@
 pluginManagement {
 	repositories {
-		maven {
-			name = 'Quilt'
-			url = 'https://maven.quiltmc.org/repository/release'
-		}
-		// Currently needed for Intermediary and other temporary dependencies
-		maven {
-			name = 'Fabric'
-			url = 'https://maven.fabricmc.net/'
-		}
+		maven { url 'https://maven.quiltmc.org/repository/release'}
+		maven { url 'https://maven.fabricmc.net/'}
 		gradlePluginPortal()
 	}
 }
 
 dependencyResolutionManagement {
 	versionCatalogs {
-		libs {
-			def mc_major = '1.20'
-			def mc = mc_major + ''
-			def fapi = '0.83.0'
-
-			// // Build Tools // //
-			version('loom', '1.2.+')
-
-			plugin('loom', 'org.quiltmc.loom').versionRef('loom')
-
-			// // Base // //
-			version('mc', mc)
-			version('ql', "0.19.0")
-			version('qm', "${mc}+build.4")
-			version('fapi', "${fapi}-${mc}")
-			version('qfapi', "7.0.1+${fapi}-${mc}")
-			version('nightConfig', "3.6.6")
-			version('quiltConfig', "1.0.0-beta.6")
-
-			library('mc', 'mojang', 'minecraft').versionRef('mc')
-			library('ql', 'org.quiltmc', 'quilt-loader').versionRef('ql')
-			library('qm', 'org.quiltmc', 'quilt-mappings').versionRef('qm')
-			library('qfapi', 'org.quiltmc.quilted-fabric-api', 'quilted-fabric-api').versionRef('qfapi')
-			library('nightConfig', 'com.electronwill.night-config', 'core').versionRef('nightConfig')
-			library('nightConfigToml', 'com.electronwill.night-config', 'toml').versionRef('nightConfig')
-			library('quiltConfig', 'org.quiltmc', 'quilt-config').versionRef('quiltConfig')
-
-			// Compat //
-			version('seasons', '2.2.1+1.20')
-
-			library('seasons', 'io.github.lucaargolo', 'fabric-seasons').versionRef('seasons')
+		create("libs") {
+			from(files("libs.versions.toml"))
 		}
 	}
 }

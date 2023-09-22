@@ -6,7 +6,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.loader.FabricLoader;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.option.KeyBind;
@@ -15,11 +15,9 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.lwjgl.glfw.GLFW;
-import org.quiltmc.config.impl.ConfigImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.nio.file.Paths;
 import java.util.List;
 
 @SuppressWarnings("deprecation")
@@ -30,7 +28,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public static boolean SHOW_OVERLAY = false;
 	public static boolean SEASONS_COMPAT = false;
 
-	public static final PicoHudConfig CONFIG = ConfigImpl.create(QuiltifiedFabricConfig.ENV, ID,"config",  Paths.get(""), b -> {}, PicoHudConfig.class, b -> {});
+	public static final PicoHudConfig CONFIG = PicoHudConfig.createToml(FabricLoader.getInstance().getConfigDir(), ID,"config",  PicoHudConfig.class);
 
 	public static KeyBind showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBind(
 		"key.picohud.show",
@@ -69,7 +67,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 			}
 		});
 		HudRenderCallback.EVENT.register(this);
-		if (FabricLoader.INSTANCE.isModLoaded("seasons")) SEASONS_COMPAT = true;
+		if (FabricLoader.getInstance().isModLoaded("seasons")) SEASONS_COMPAT = true;
 		LOGGER.info("[PicoHUD] Initialized.");
 	}
 
