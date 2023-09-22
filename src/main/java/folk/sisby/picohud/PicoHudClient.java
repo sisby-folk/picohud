@@ -11,8 +11,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBind;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.world.World;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -38,25 +39,25 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	));
 
 	public static final List<MutableText> DIRECTIONS = List.of(
-		Text.translatable("picohud.directions.south"),
-		Text.translatable("picohud.directions.southwest"),
-		Text.translatable("picohud.directions.west"),
-		Text.translatable("picohud.directions.northwest"),
-		Text.translatable("picohud.directions.north"),
-		Text.translatable("picohud.directions.northeast"),
-		Text.translatable("picohud.directions.east"),
-		Text.translatable("picohud.directions.southeast")
+		new TranslatableText("picohud.directions.south"),
+		new TranslatableText("picohud.directions.southwest"),
+		new TranslatableText("picohud.directions.west"),
+		new TranslatableText("picohud.directions.northwest"),
+		new TranslatableText("picohud.directions.north"),
+		new TranslatableText("picohud.directions.northeast"),
+		new TranslatableText("picohud.directions.east"),
+		new TranslatableText("picohud.directions.southeast")
 	);
 
 	public static final List<MutableText> DIRECTION_AXES = List.of(
-		Text.literal("[=+]"),
-		Text.literal("[-+]"),
-		Text.literal("[-=]"),
-		Text.literal("[--]"),
-		Text.literal("[=-]"),
-		Text.literal("[+-]"),
-		Text.literal("[+=]"),
-		Text.literal("[++]")
+		new LiteralText("[=+]"),
+		new LiteralText("[-+]"),
+		new LiteralText("[-=]"),
+		new LiteralText("[--]"),
+		new LiteralText("[=-]"),
+		new LiteralText("[+-]"),
+		new LiteralText("[+=]"),
+		new LiteralText("[++]")
 	);
 
 	@Override
@@ -86,13 +87,13 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		matrixStack.push();
 
 		if (CONFIG.showCoordinates) {
-			MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
+			MutableText coordinateText = new TranslatableText("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
 			client.textRenderer.drawWithShadow(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
 		}
 
 		if (CONFIG.showDirectionCardinal || CONFIG.showDirectionAxes) {
 			int direction = (int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90);
-			MutableText directionText = Text.literal("");
+			MutableText directionText = new LiteralText("");
 			if (CONFIG.showDirectionCardinal) directionText.append(DIRECTIONS.get(direction)).append(" ");
 			if (CONFIG.showDirectionAxes) directionText.append(DIRECTION_AXES.get(direction));
 			client.textRenderer.drawWithShadow(matrixStack, directionText, 5, 17, 0xFFFFFF);
@@ -102,8 +103,8 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 			long time = clientWorld.getTimeOfDay();
 			String timeOfDay = String.format("%d:%02d", (((6000 + time) % 24000) / 1000), time % 1000 > 500 ? 30 : 0);
 			MutableText timeText = SEASONS_COMPAT ?
-				Text.translatable("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(clientWorld), SeasonsCompat.getDayOfSeason(clientWorld), (SeasonsCompat.getYear(clientWorld) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(clientWorld)) : "") + timeOfDay) :
-				Text.translatable("picohud.hud.time.default", 1 + (time  / 24000), timeOfDay);
+				new TranslatableText("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(clientWorld), SeasonsCompat.getDayOfSeason(clientWorld), (SeasonsCompat.getYear(clientWorld) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(clientWorld)) : "") + timeOfDay) :
+				new TranslatableText("picohud.hud.time.default", 1 + (time  / 24000), timeOfDay);
 			client.textRenderer.drawWithShadow(matrixStack, timeText, 5, 29, 0xFFFFFF);
 		}
 

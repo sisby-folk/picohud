@@ -21,6 +21,12 @@ repositories {
 	mavenLocal()
 	maven { url "https://maven.terraformersmc.com/" }
 	maven { url "https://maven.cafeteria.dev/releases" }
+	maven {
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 dependencies {
@@ -87,7 +93,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		versionName = baseVersion
 		versionType = 'release'
 		uploadFile = remapJar
-		gameVersions = [libs.versions.mc.get(), '1.19.3', '1.19.4']
+		gameVersions = [libs.versions.mc.get()]
 		loaders = ['quilt', 'fabric']
 		detectLoaders = false
 		dependencies {
