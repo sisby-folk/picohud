@@ -27,5 +27,10 @@
   },
   "suggests": {
     "seasons": ">=${seasons}"
-  }
+  },
+  "jars": [
+    {
+      "file": "META-INF/jars/kaleido-config-${kaleidoConfig}.jar"
+    }
+  ]
 }
