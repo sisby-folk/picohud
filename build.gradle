@@ -47,12 +47,13 @@ dependencies {
 
 processResources {
 	final Map<String, String> map = [
-		"version": version.toString(),
-		"mc"     : libs.versions.mc.get(),
-		"ql"     : libs.versions.ql.get(),
-		"fapi"   : libs.versions.fapi.get(),
-		"qfapi"  : libs.versions.qfapi.get(),
-		"seasons": libs.versions.seasons.get(),
+		"version"      : version.toString(),
+		"mc"           : libs.versions.mc.get(),
+		"ql"           : libs.versions.ql.get(),
+		"fapi"         : libs.versions.fapi.get(),
+		"qfapi"        : libs.versions.qfapi.get(),
+		"kaleidoConfig": libs.versions.kaleidoConfig.get(),
+		"seasons"      : libs.versions.seasons.get(),
 	]
 
 	inputs.properties(map)
