@@ -21,16 +21,12 @@
     ]
   },
   "depends": {
-    "fabricloader": ">=0.14.9",
+    "fabricloader": ">=${fl}",
     "minecraft": ">=${mc}",
+    "fabric-api": ">=${fapi}",
     "java": ">=17"
   },
   "suggests": {
     "seasons": ">=${seasons}"
-  },
-  "jars": [
-    {
-      "file": "META-INF/jars/kaleido-config-${kaleidoConfig}.jar"
-    }
-  ]
+  }
 }
