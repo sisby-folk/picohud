@@ -19,33 +19,31 @@ group = 'folk.sisby'
 
 repositories {
 	mavenLocal()
+	maven { url 'https://maven.quiltmc.org/repository/release'}
 	maven { url "https://maven.terraformersmc.com/" }
 	maven { url "https://maven.cafeteria.dev/releases" }
 }
 
 dependencies {
-	// // Base // //
 	minecraft libs.mc
 	mappings variantOf(libs.qm) { classifier "intermediary-v2" }
-	modImplementation libs.ql
-	modImplementation libs.qfapi
-
+	modImplementation libs.fl
+	modImplementation libs.fapi
 	implementation libs.kaleidoConfig
-	include libs.kaleidoConfig
 
-	// Compat //
 	modCompileOnly(libs.seasons) {
 		exclude group: 'me.shedaniel'
 	}
+
+	include libs.kaleidoConfig
 }
 
 processResources {
 	final Map<String, String> map = [
 		"version"      : version.toString(),
 		"mc"           : libs.versions.mc.get(),
-		"ql"           : libs.versions.ql.get(),
+		"fl"           : libs.versions.fl.get(),
 		"fapi"         : libs.versions.fapi.get(),
-		"qfapi"        : libs.versions.qfapi.get(),
 		"kaleidoConfig": libs.versions.kaleidoConfig.get(),
 		"seasons"      : libs.versions.seasons.get(),
 	]
@@ -79,7 +77,7 @@ publishing {
 	}
 }
 
-if (System.getenv("MODRINTH_TOKEN")) {
+if (System.getenv("MODRINTH_TOKEN") && file("CHANGELOG.md").exists() ) {
 	apply plugin: "com.modrinth.minotaur"
 	modrinth {
 		token = System.getenv("MODRINTH_TOKEN")
@@ -92,14 +90,15 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		loaders = ['quilt', 'fabric']
 		detectLoaders = false
 		dependencies {
-			optional.project "fabric-seasons"
+			required.version libs.fapi.get().getName(), libs.versions.fapi.get()
+			optional.version libs.seasons.get().getName(), libs.versions.seasons.get()
 		}
-		changelog = "Changelog: https://github.com/sisby-folk/picohud/releases/tag/v" + baseVersion
+		changelog = rootProject.file("CHANGELOG.md").text + "\n\nChangelog: https://github.com/sisby-folk/$project.name/releases/tag/v$baseVersion"
 		syncBodyFrom = rootProject.file("README.md").text
 	}
 }
 
-if (System.getenv("GITHUB_TOKEN")) {
+if (System.getenv("GITHUB_TOKEN") && file("CHANGELOG.md").exists()) {
 	apply plugin: "com.github.breadmoirai.github-release"
 	githubRelease {
 		token System.getenv("GITHUB_TOKEN")
@@ -113,6 +112,7 @@ if (System.getenv("GITHUB_TOKEN")) {
 		releaseAssets remapJar.archiveFile
 		allowUploadToExisting true
 		generateReleaseNotes true
+		body rootProject.file("CHANGELOG.md").text
 	}
 	tasks.githubRelease.dependsOn remapJar
 }
