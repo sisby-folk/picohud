@@ -29,7 +29,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public static boolean SHOW_OVERLAY = false;
 	public static boolean SEASONS_COMPAT = false;
 
-	public static final PicoHudConfig CONFIG = PicoHudConfig.createToml(FabricLoader.getInstance().getConfigDir(), ID,"config",  PicoHudConfig.class);
+	public static final PicoHudConfig CONFIG = PicoHudConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", ID, PicoHudConfig.class);
 
 	public static KeyBinding showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 		"key.picohud.show",
@@ -104,7 +104,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 			String timeOfDay = String.format("%d:%02d", (((6000 + time) % 24000) / 1000), time % 1000 > 500 ? 30 : 0);
 			MutableText timeText = SEASONS_COMPAT ?
 				new TranslatableText("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(clientWorld), SeasonsCompat.getDayOfSeason(clientWorld), (SeasonsCompat.getYear(clientWorld) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(clientWorld)) : "") + timeOfDay) :
-				new TranslatableText("picohud.hud.time.default", 1 + (time  / 24000), timeOfDay);
+				new TranslatableText("picohud.hud.time.default", 1 + (time / 24000), timeOfDay);
 			client.textRenderer.drawWithShadow(matrixStack, timeText, 5, 29, 0xFFFFFF);
 		}
 
