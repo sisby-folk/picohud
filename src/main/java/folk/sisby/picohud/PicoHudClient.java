@@ -1,6 +1,5 @@
 package folk.sisby.picohud;
 
-import com.mojang.blaze3d.platform.InputUtil;
 import folk.sisby.picohud.compat.SeasonsCompat;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -8,12 +7,14 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.KeyBind;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -21,7 +22,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-@SuppressWarnings("deprecation")
 public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public static final String ID = "picohud";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
@@ -31,7 +31,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 
 	public static final PicoHudConfig CONFIG = PicoHudConfig.createToml(FabricLoader.getInstance().getConfigDir(), ID,"config",  PicoHudConfig.class);
 
-	public static KeyBind showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBind(
+	public static KeyBinding showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 		"key.picohud.show",
 		InputUtil.Type.KEYSYM,
 		GLFW.GLFW_KEY_LEFT_ALT,
@@ -106,6 +106,12 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 				new TranslatableText("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(clientWorld), SeasonsCompat.getDayOfSeason(clientWorld), (SeasonsCompat.getYear(clientWorld) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(clientWorld)) : "") + timeOfDay) :
 				new TranslatableText("picohud.hud.time.default", 1 + (time  / 24000), timeOfDay);
 			client.textRenderer.drawWithShadow(matrixStack, timeText, 5, 29, 0xFFFFFF);
+		}
+
+		if (CONFIG.showBiome) {
+			Identifier biomeId = clientWorld.getBiome(cameraEntity.getBlockPos()).getKey().orElseThrow().getValue();
+			MutableText biomeText = new TranslatableText("biome.%s.%s".formatted(biomeId.getNamespace(), biomeId.getPath()));
+			client.textRenderer.drawWithShadow(matrixStack, biomeText, 5, 41, 0xFFFFFF);
 		}
 
 		matrixStack.pop();

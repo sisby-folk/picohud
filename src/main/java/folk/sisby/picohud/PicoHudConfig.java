@@ -14,4 +14,6 @@ public class PicoHudConfig extends WrappedConfig {
 	public final Boolean showDirectionAxes = false;
 	@Comment("Whether to show the current day and time, formatted using seasons if it's installed")
 	public final Boolean showDayTime = true;
+	@Comment("Whether to show the name of the biome you're standing in")
+	public final Boolean showBiome = true;
 }
