@@ -22,9 +22,8 @@
   },
   "depends": {
     "fabricloader": ">=${fl}",
-    "minecraft": ">=${mc}",
-    "fabric-api": ">=${fapi}",
-    "java": ">=17"
+    "minecraft": ">=1.21-",
+    "fabric-api": ">=${fapi}"
   },
   "suggests": {
     "seasons": ">=${seasons}"

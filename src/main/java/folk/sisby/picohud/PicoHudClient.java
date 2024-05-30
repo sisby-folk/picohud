@@ -9,6 +9,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.text.MutableText;
@@ -72,13 +73,13 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	}
 
 	@Override
-	public void onHudRender(DrawContext context, float tickDelta) {
+	public void onHudRender(DrawContext context, RenderTickCounter tick) {
 		if (!CONFIG.useKeyToggle) {
 			SHOW_OVERLAY = showOverlayKeybinding.isPressed();
 		}
 
 		MinecraftClient client = MinecraftClient.getInstance();
-		if (!SHOW_OVERLAY || !MinecraftClient.isHudEnabled() || client.options.debugEnabled) return;
+		if (!SHOW_OVERLAY || !MinecraftClient.isHudEnabled() || client.getDebugHud().shouldShowDebugHud()) return;
 		World clientWorld = MinecraftClient.getInstance().world;
 		Entity cameraEntity = client.getCameraEntity();
 		if (clientWorld == null || cameraEntity == null) return;
@@ -89,7 +90,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		}
 
 		if (CONFIG.showDirectionCardinal || CONFIG.showDirectionAxes) {
-			int direction = (int) ((((cameraEntity.getYaw(tickDelta) * 2 + 45) % 720) + 720) % 720 / 90);
+			int direction = (int) ((((cameraEntity.getYaw(tick.getTickDelta(true)) * 2 + 45) % 720) + 720) % 720 / 90);
 			MutableText directionText = Text.literal("");
 			if (CONFIG.showDirectionCardinal) directionText.append(DIRECTIONS.get(direction)).append(" ");
 			if (CONFIG.showDirectionAxes) directionText.append(DIRECTION_AXES.get(direction));

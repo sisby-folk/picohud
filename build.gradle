@@ -22,6 +22,7 @@ repositories {
 	maven { url 'https://maven.quiltmc.org/repository/release'}
 	maven { url "https://maven.terraformersmc.com/" }
 	maven { url "https://maven.cafeteria.dev/releases" }
+	maven { url 'https://repo.sleeping.town/' } // Kaleido
 }
 
 dependencies {
