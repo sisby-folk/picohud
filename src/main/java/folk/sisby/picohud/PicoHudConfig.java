@@ -5,15 +5,15 @@ import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
 
 public class PicoHudConfig extends WrappedConfig {
 	@Comment("Whether the 'show overlay' key should act as a toggle, instead of a hold")
-	public final Boolean useKeyToggle = false;
+	public boolean useKeyToggle = false;
 	@Comment("Whether to show rounded coordinates")
-	public final Boolean showCoordinates = true;
+	public boolean showCoordinates = true;
 	@Comment("Whether to show cardinal facing direction")
-	public final Boolean showDirectionCardinal = true;
+	public boolean showDirectionCardinal = true;
 	@Comment("Whether to show an indicator (e.g. [=+]) that indicates how travelling forward will affect your X and Z coordinates")
-	public final Boolean showDirectionAxes = false;
+	public boolean showDirectionAxes = false;
 	@Comment("Whether to show the current day and time, formatted using seasons if it's installed")
-	public final Boolean showDayTime = true;
+	public boolean showDayTime = true;
 	@Comment("Whether to show the name of the biome you're standing in")
-	public final Boolean showBiome = true;
+	public boolean showBiome = true;
 }
