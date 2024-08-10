@@ -3,11 +3,11 @@ loom = "1.7.+"
 githubRelease = "2.4.1"
 minotaur = "2.+"
 
-mc = "1.21-pre1"
+mc = "1.21"
 fl = "0.15.11"
-yarn = "1.21-pre1+build.3"
-fapi = "0.99.2+1.21"
-kaleidoConfig = "0.3.1+1.3.1"
+yarn = "1.21+build.9"
+fapi = "0.102.0+1.21"
+kaleidoConfig = "0.3.1+1.3.2"
 
 seasons = "2.2.1+1.20"
 
