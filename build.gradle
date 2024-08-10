@@ -80,7 +80,7 @@ modrinth {
 		required.version libs.fapi.get().getName(), libs.versions.fapi.get()
 		optional.version libs.seasons.get().getName(), libs.versions.seasons.get()
 	}
-	changelog = !file("CHANGELOG.md").exists() ? "" : rootProject.file("CHANGELOG.md").text + "\n\nChangelog: https://github.com/sisby-folk/$project.name/releases/tag/v$baseVersion"
+	changelog = !file("CHANGELOG.md").exists() ? "" : rootProject.file("CHANGELOG.md").text + "\n\nChangelog: https://github.com/sisby-folk/$project.name/releases/tag/v$version"
 	syncBodyFrom = rootProject.file("README.md").text
 }
 
