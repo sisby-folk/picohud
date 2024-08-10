@@ -13,7 +13,7 @@ displayURL = "${homepage}"
 logoFile = "assets/picohud/icon.png"
 
 [properties]
-"connector:placeholder"=true
+"connector:placeholder" = true
 
 [[dependencies.${ modId }]]
 modId = "connectormod"
