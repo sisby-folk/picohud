@@ -25,19 +25,7 @@ import java.util.List;
 public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public static final String ID = "picohud";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
-
-	public static boolean SHOW_OVERLAY = false;
-	public static boolean SEASONS_COMPAT = false;
-
 	public static final PicoHudConfig CONFIG = PicoHudConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", ID, PicoHudConfig.class);
-
-	public static KeyBinding showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-		"key.picohud.show",
-		InputUtil.Type.KEYSYM,
-		GLFW.GLFW_KEY_LEFT_ALT,
-		"category.picohud.picohud"
-	));
-
 	public static final List<MutableText> DIRECTIONS = List.of(
 		new TranslatableText("picohud.directions.south"),
 		new TranslatableText("picohud.directions.southwest"),
@@ -48,7 +36,6 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		new TranslatableText("picohud.directions.east"),
 		new TranslatableText("picohud.directions.southeast")
 	);
-
 	public static final List<MutableText> DIRECTION_AXES = List.of(
 		new LiteralText("[=+]"),
 		new LiteralText("[-+]"),
@@ -59,6 +46,14 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		new LiteralText("[+=]"),
 		new LiteralText("[++]")
 	);
+	public static boolean SHOW_OVERLAY = false;
+	public static boolean SEASONS_COMPAT = false;
+	public static KeyBinding showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+		"key.picohud.show",
+		InputUtil.Type.KEYSYM,
+		GLFW.GLFW_KEY_LEFT_ALT,
+		"category.picohud.picohud"
+	));
 
 	@Override
 	public void onInitializeClient() {
