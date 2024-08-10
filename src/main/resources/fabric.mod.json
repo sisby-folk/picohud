@@ -1,20 +1,19 @@
 {
   "schemaVersion": 1,
-  "id": "picohud",
+  "id": "${modId}",
   "version": "${version}",
-  "name": "PicoHUD",
-  "description": "An unobtrusive, player-readable information hud",
+  "name": "${modName}",
+  "description": "${modDescription}",
   "authors": [
-    "Sisby folk"
+    "${authors}"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/mod/picohud",
-    "issues": "https://github.com/sisby-folk/picohud/issues",
-    "sources": "https://github.com/sisby-folk/picohud"
+    "homepage": "${homepage}",
+    "issues": "${issues}",
+    "sources": "${sources}"
   },
-  "license": "LGPL-3.0-only",
+  "license": "${license}",
   "icon": "assets/picohud/icon.png",
-  "environment": "*",
   "entrypoints": {
     "client": [
       "folk.sisby.picohud.PicoHudClient"
@@ -23,8 +22,7 @@
   "depends": {
     "fabricloader": ">=${fl}",
     "minecraft": ">=${mc}",
-    "fabric-api": ">=${fapi}",
-    "java": ">=17"
+    "fabric-api": ">=${fapi}"
   },
   "suggests": {
     "seasons": ">=${seasons}"
