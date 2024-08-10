@@ -16,18 +16,18 @@ repositories {
 }
 
 dependencies {
+	implementation libs.kaleidoConfig
+	include libs.kaleidoConfig
+
 	minecraft libs.mc
 	mappings variantOf(libs.yarn) { classifier "v2" }
 	modImplementation libs.fl
 	modImplementation libs.fapi
-	implementation libs.kaleidoConfig
 
 	modCompileOnly(libs.seasons) {
 		exclude group: "me.shedaniel"
 		exclude group: "com.terraformersmc"
 	}
-
-	include libs.kaleidoConfig
 }
 
 processResources {
