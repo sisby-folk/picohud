@@ -10,7 +10,7 @@ displayName = "${modName}"
 description = '''${modDescription}'''
 authors = "${members}"
 displayURL = "${homepage}"
-logoFile = "assets/picohud/icon.png"
+logoFile = "assets/${modId}/icon.png"
 
 [properties]
 "connector:placeholder" = true
