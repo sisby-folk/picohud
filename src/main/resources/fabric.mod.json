@@ -13,7 +13,7 @@
 		"sources": "${sources}"
 	},
 	"license": "${license}",
-	"icon": "assets/picohud/icon.png",
+	"icon": "assets/${modId}/icon.png",
 	"entrypoints": {
 		"client": [
 			"folk.sisby.picohud.PicoHudClient"
