@@ -81,7 +81,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		matrixStack.push();
 
 		if (CONFIG.showCoordinates) {
-			MutableText coordinateText = Text.translatable("picohud.hud.coordinates", (int) cameraEntity.getX(), (int) cameraEntity.getY(), (int) cameraEntity.getZ());
+			MutableText coordinateText = Text.translatable("picohud.hud.coordinates", cameraEntity.getBlockX(), cameraEntity.getBlockY(), cameraEntity.getBlockZ());
 			client.textRenderer.drawWithShadow(matrixStack, coordinateText, 5, 5, 0xFFFFFF);
 		}
 
