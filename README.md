@@ -22,7 +22,7 @@ This includes:
 
 ![full config preview](https://cdn.modrinth.com/data/483PZAuC/images/ca921b0fd98456fd7a88ea7712c791be16cb9bc4.png)
 
-Includes configuration for:
+Includes configuration in `config/picohud.toml` for:
 
 - Which information lines to display.
 - Whether to use toggle or hold logic for the 'show overlay' key.
