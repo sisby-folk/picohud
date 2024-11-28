@@ -1,0 +1,15 @@
+{
+	"picohud.directions.south": "Направление юг",
+	"picohud.directions.southwest": "Направление юго-запад",
+	"picohud.directions.west": "Направление запад",
+	"picohud.directions.northwest": "Направление северо-запад",
+	"picohud.directions.north": "Направление север",
+	"picohud.directions.northeast": "Направление северо-восток",
+	"picohud.directions.east": "Направление восток",
+	"picohud.directions.southeast": "Направление юго-восток",
+	"picohud.hud.coordinates": "%d, %d, %d",
+	"picohud.hud.time.default": "День %s, %s",
+	"picohud.hud.time.seasons": "%s %d %s",
+	"key.picohud.show": "Показать интерфейс",
+	"category.picohud.picohud": "PicoHUD"
+}
