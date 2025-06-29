@@ -10,6 +10,8 @@ public class PicoHudConfig extends WrappedConfig implements ModInitializer {
 
 	@Comment("Whether the 'show overlay' key should act as a toggle, instead of a hold")
 	public boolean useKeyToggle = false;
+	@Comment("If the overlay should be shown by default when toggle is being used.")
+	public boolean showByDefault = true;
 	@Comment("Whether to show rounded coordinates")
 	public boolean showCoordinates = true;
 	@Comment("Whether to show cardinal facing direction")

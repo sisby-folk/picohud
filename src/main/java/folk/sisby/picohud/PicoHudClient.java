@@ -46,7 +46,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		Text.literal("[+=]"),
 		Text.literal("[++]")
 	);
-	public static boolean SHOW_OVERLAY = true;
+	public static boolean SHOW_OVERLAY = CONFIG.showByDefault;
 	public static boolean SEASONS_COMPAT = false;
 	public static KeyBinding showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 		"key.picohud.show",
