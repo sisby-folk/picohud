@@ -15,6 +15,9 @@
 	"license": "${license}",
 	"icon": "assets/${modId}/icon.png",
 	"entrypoints": {
+		"main": [
+			"folk.sisby.picohud.PicoHudConfig"
+		],
 		"client": [
 			"folk.sisby.picohud.PicoHudClient"
 		]
