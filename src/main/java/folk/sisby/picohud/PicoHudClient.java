@@ -22,10 +22,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static folk.sisby.picohud.PicoHudConfig.CONFIG;
+
 public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public static final String ID = "picohud";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
-	public static final PicoHudConfig CONFIG = PicoHudConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", ID, PicoHudConfig.class);
 	public static final List<MutableText> DIRECTIONS = List.of(
 		new TranslatableText("picohud.directions.south"),
 		new TranslatableText("picohud.directions.southwest"),
@@ -46,7 +47,7 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		new LiteralText("[+=]"),
 		new LiteralText("[++]")
 	);
-	public static boolean SHOW_OVERLAY = false;
+	public static boolean SHOW_OVERLAY = CONFIG.showByDefault;
 	public static boolean SEASONS_COMPAT = false;
 	public static KeyBinding showOverlayKeybinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
 		"key.picohud.show",
