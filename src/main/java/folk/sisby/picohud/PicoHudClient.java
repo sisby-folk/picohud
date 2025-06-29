@@ -21,10 +21,11 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static folk.sisby.picohud.PicoHudConfig.CONFIG;
+
 public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 	public static final String ID = "picohud";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
-	public static final PicoHudConfig CONFIG = PicoHudConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", ID, PicoHudConfig.class);
 	public static final List<MutableText> DIRECTIONS = List.of(
 		Text.translatable("picohud.directions.south"),
 		Text.translatable("picohud.directions.southwest"),

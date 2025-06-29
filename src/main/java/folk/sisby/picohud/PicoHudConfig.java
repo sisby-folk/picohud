@@ -2,8 +2,12 @@ package folk.sisby.picohud;
 
 import folk.sisby.kaleido.api.WrappedConfig;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 
-public class PicoHudConfig extends WrappedConfig {
+public class PicoHudConfig extends WrappedConfig implements ModInitializer {
+	public static final PicoHudConfig CONFIG = PicoHudConfig.createToml(FabricLoader.getInstance().getConfigDir(), "", PicoHudClient.ID, PicoHudConfig.class);
+
 	@Comment("Whether the 'show overlay' key should act as a toggle, instead of a hold")
 	public boolean useKeyToggle = false;
 	@Comment("Whether to show rounded coordinates")
@@ -16,4 +20,7 @@ public class PicoHudConfig extends WrappedConfig {
 	public boolean showDayTime = true;
 	@Comment("Whether to show the name of the biome you're standing in")
 	public boolean showBiome = true;
+
+	@Override
+	public void onInitialize() {}
 }
