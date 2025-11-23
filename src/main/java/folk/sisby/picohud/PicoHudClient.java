@@ -79,9 +79,12 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 		Entity cameraEntity = client.getCameraEntity();
 		if (clientWorld == null || cameraEntity == null) return;
 
+		int y = 5;
+
 		if (CONFIG.showCoordinates) {
 			MutableText coordinateText = Text.translatable("picohud.hud.coordinates", cameraEntity.getBlockX(), cameraEntity.getBlockY(), cameraEntity.getBlockZ());
-			context.drawTextWithShadow(client.textRenderer, coordinateText, 5, 5, 0xFFFFFF);
+			context.drawTextWithShadow(client.textRenderer, coordinateText, 5, y, 0xFFFFFF);
+			y += 12;
 		}
 
 		if (CONFIG.showDirectionCardinal || CONFIG.showDirectionAxes) {
@@ -89,7 +92,8 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 			MutableText directionText = Text.literal("");
 			if (CONFIG.showDirectionCardinal) directionText.append(DIRECTIONS.get(direction)).append(" ");
 			if (CONFIG.showDirectionAxes) directionText.append(DIRECTION_AXES.get(direction));
-			context.drawTextWithShadow(client.textRenderer, directionText, 5, 17, 0xFFFFFF);
+			context.drawTextWithShadow(client.textRenderer, directionText, 5, y, 0xFFFFFF);
+			y += 12;
 		}
 
 		if (CONFIG.showDayTime && !clientWorld.getDimension().hasFixedTime()) {
@@ -98,13 +102,14 @@ public class PicoHudClient implements ClientModInitializer, HudRenderCallback {
 			MutableText timeText = SEASONS_COMPAT ?
 				Text.translatable("picohud.hud.time.seasons", SeasonsCompat.getSeasonText(clientWorld), SeasonsCompat.getDayOfSeason(clientWorld), (SeasonsCompat.getYear(clientWorld) > 1 ? String.format("Y%d ", SeasonsCompat.getYear(clientWorld)) : "") + timeOfDay) :
 				Text.translatable("picohud.hud.time.default", 1 + (time / 24000), timeOfDay);
-			context.drawTextWithShadow(client.textRenderer, timeText, 5, 29, 0xFFFFFF);
+			context.drawTextWithShadow(client.textRenderer, timeText, 5, y, 0xFFFFFF);
+			y += 12;
 		}
 
 		if (CONFIG.showBiome) {
 			Identifier biomeId = clientWorld.getBiome(cameraEntity.getBlockPos()).getKey().orElseThrow().getValue();
 			MutableText biomeText = Text.translatable("biome.%s.%s".formatted(biomeId.getNamespace(), biomeId.getPath()));
-			context.drawTextWithShadow(client.textRenderer, biomeText, 5, 41, 0xFFFFFF);
+			context.drawTextWithShadow(client.textRenderer, biomeText, 5, y, 0xFFFFFF);
 		}
 	}
 }
